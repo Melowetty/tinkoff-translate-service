@@ -23,7 +23,7 @@ class TranslateServiceImpl(
             targetLanguage = targetLanguage,
             input = text,
             translated = translated,
-            time = LocalDateTime.now(),
+            createdOn = LocalDateTime.now(),
             id = 0,
             ipAddress = ip,
         )

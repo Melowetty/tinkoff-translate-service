@@ -10,5 +10,5 @@ data class TranslateRecord(
     private val targetLanguage: Language,
     private val input: String,
     private val translated: String,
-    private val time: LocalDateTime,
+    private val createdOn: LocalDateTime,
 )
