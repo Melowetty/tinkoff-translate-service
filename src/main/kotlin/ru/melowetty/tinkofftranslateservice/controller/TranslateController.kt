@@ -17,10 +17,10 @@ class TranslateController(
 ) {
     @PostMapping
     fun translate(webRequest: HttpServletRequest, @RequestBody request: TranslateRequest): TranslateResponse {
-        val source = Language.getByCode(request.source)
+        val source = Language.getByCode(request.sourceLanguage)
             ?: throw IllegalArgumentException("Не найден исходный язык")
 
-        val target = Language.getByCode(request.target)
+        val target = Language.getByCode(request.targetLanguage)
             ?: throw IllegalArgumentException("Не найден требуемый язык")
 
         if(request.text.isBlank()) {
@@ -29,7 +29,7 @@ class TranslateController(
 
         val ip = webRequest.remoteAddr
 
-        val translation = translateService.translate(text = request.text, target = target, source = source, ip = ip)
+        val translation = translateService.translate(text = request.text, targetLanguage = target, sourceLanguage = source, ip = ip)
 
         return TranslateResponse(
             translated = translation,

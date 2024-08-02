@@ -6,7 +6,7 @@ import ru.melowetty.tinkofftranslateservice.service.TranslatorService
 
 @Service
 class TranslatorServiceImpl: TranslatorService {
-    override suspend fun translateWord(word: String, source: Language, target: Language): String {
+    override suspend fun translateWord(word: String, sourceLanguage: Language, targetLanguage: Language): String {
         return "Translated $word"
     }
 }

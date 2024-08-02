@@ -15,12 +15,12 @@ class TranslateServiceImpl(
     private val translatorService: TranslatorService,
     private val translateRecordRepository: TranslateRecordRepository
 ): TranslateService {
-    override fun translate(text: String, source: Language, target: Language, ip: String): String {
-        val translated = translateText(text, source, target)
+    override fun translate(text: String, sourceLanguage: Language, targetLanguage: Language, ip: String): String {
+        val translated = translateText(text, sourceLanguage, targetLanguage)
 
         val record = TranslateRecord(
-            source = source,
-            target = target,
+            sourceLanguage = sourceLanguage,
+            targetLanguage = targetLanguage,
             input = text,
             translated = translated,
             time = LocalDateTime.now(),
@@ -35,7 +35,7 @@ class TranslateServiceImpl(
         return translated
     }
 
-    private fun translateText(text: String, source: Language, target: Language): String {
+    private fun translateText(text: String, sourceLanguage: Language, targetLanguage: Language): String {
         return runBlocking {
             val executor = Executors.newFixedThreadPool(10)
             val dispatcher = executor.asCoroutineDispatcher()
@@ -43,7 +43,7 @@ class TranslateServiceImpl(
 
             val words = text.split(" ").map {
                 scope.async {
-                    translatorService.translateWord(it, source, target)
+                    translatorService.translateWord(it, sourceLanguage, targetLanguage)
                 }
             }.awaitAll()
             executor.shutdown()

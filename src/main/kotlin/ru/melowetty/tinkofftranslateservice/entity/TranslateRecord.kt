@@ -6,8 +6,8 @@ import java.time.LocalDateTime
 data class TranslateRecord(
     private val id: Long,
     private val ipAddress: String,
-    private val source: Language,
-    private val target: Language,
+    private val sourceLanguage: Language,
+    private val targetLanguage: Language,
     private val input: String,
     private val translated: String,
     private val time: LocalDateTime,
