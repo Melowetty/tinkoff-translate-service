@@ -16,6 +16,10 @@ class TranslateServiceImpl(
     private val translateRecordRepository: TranslateRecordRepository
 ): TranslateService {
     override fun translate(text: String, sourceLanguage: Language, targetLanguage: Language, ip: String): String {
+        if(text.isBlank()) {
+            throw IllegalArgumentException("Текст для перевода не может быть пустым")
+        }
+        
         val translated = translateText(text, sourceLanguage, targetLanguage)
 
         val record = TranslateRecord(
