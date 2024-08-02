@@ -1,5 +1,6 @@
 package ru.melowetty.tinkofftranslateservice.controller
 
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -15,7 +16,7 @@ class TranslateController(
     private val translateService: TranslateService
 ) {
     @PostMapping
-    fun translate(@RequestBody request: TranslateRequest): TranslateResponse {
+    fun translate(webRequest: HttpServletRequest, @RequestBody request: TranslateRequest): TranslateResponse {
         val source = Language.getByCode(request.source)
             ?: throw IllegalArgumentException("Не найден исходный язык")
 
@@ -26,7 +27,9 @@ class TranslateController(
             throw IllegalArgumentException("Текст для перевода не может быть пустым")
         }
 
-        val translation = translateService.translate(text = request.text, target = target, source = source)
+        val ip = webRequest.remoteAddr
+
+        val translation = translateService.translate(text = request.text, target = target, source = source, ip = ip)
 
         return TranslateResponse(
             translated = translation,
