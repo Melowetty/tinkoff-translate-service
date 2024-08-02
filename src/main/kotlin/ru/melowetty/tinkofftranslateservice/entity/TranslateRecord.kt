@@ -4,11 +4,11 @@ import ru.melowetty.tinkofftranslateservice.model.Language
 import java.time.LocalDateTime
 
 data class TranslateRecord(
-    private val id: Long,
-    private val ipAddress: String,
-    private val sourceLanguage: Language,
-    private val targetLanguage: Language,
-    private val input: String,
-    private val translated: String,
-    private val createdOn: LocalDateTime,
+    val id: Int,
+    val ipAddress: String,
+    val sourceLanguage: Language,
+    val targetLanguage: Language,
+    val input: String,
+    val translated: String,
+    val createdOn: LocalDateTime,
 )

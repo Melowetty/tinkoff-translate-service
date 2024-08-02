@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS translate_record(
     id SERIAL PRIMARY KEY,
-    ip_address INET NOT NULL,
+    ip_address VARCHAR(45) NOT NULL,
     source_language VARCHAR(64) NOT NULL,
     target_language VARCHAR(64) NOT NULL,
     input TEXT NOT NULL,
