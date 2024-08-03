@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service
 import ru.melowetty.tinkofftranslateservice.entity.TranslateRecord
 import ru.melowetty.tinkofftranslateservice.entity.Language
 import ru.melowetty.tinkofftranslateservice.repository.TranslateRecordRepository
+import ru.melowetty.tinkofftranslateservice.service.LanguageService
 import ru.melowetty.tinkofftranslateservice.service.TranslateService
 import ru.melowetty.tinkofftranslateservice.service.TranslatorService
 import java.time.LocalDateTime
@@ -13,18 +14,25 @@ import java.util.concurrent.Executors
 @Service
 class TranslateServiceImpl(
     private val translatorService: TranslatorService,
-    private val translateRecordRepository: TranslateRecordRepository
+    private val translateRecordRepository: TranslateRecordRepository,
+    private val languageService: LanguageService
 ): TranslateService {
-    override fun translate(text: String, sourceLanguage: Language, targetLanguage: Language, ip: String): String {
+    override fun translate(text: String, sourceLanguage: String, targetLanguage: String, ip: String): String {
+        val source = languageService.getLanguageByCode(sourceLanguage)
+            ?: throw IllegalArgumentException("Не найден исходный язык")
+
+        val target = languageService.getLanguageByCode(targetLanguage)
+            ?: throw IllegalArgumentException("Не найден требуемый язык")
+
         if(text.isBlank()) {
             throw IllegalArgumentException("Текст для перевода не может быть пустым")
         }
         
-        val translated = translateText(text, sourceLanguage, targetLanguage)
+        val translated = translateText(text, source, target)
 
         val record = TranslateRecord(
-            sourceLanguage = sourceLanguage,
-            targetLanguage = targetLanguage,
+            sourceLanguage = source,
+            targetLanguage = target,
             input = text,
             translated = translated,
             createdOn = LocalDateTime.now(),
