@@ -1,7 +1,7 @@
 package ru.melowetty.tinkofftranslateservice.service.impl
 
 import org.springframework.stereotype.Service
-import ru.melowetty.tinkofftranslateservice.model.Language
+import ru.melowetty.tinkofftranslateservice.entity.Language
 import ru.melowetty.tinkofftranslateservice.service.TranslatorService
 
 @Service

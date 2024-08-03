@@ -1,6 +1,5 @@
 package ru.melowetty.tinkofftranslateservice.entity
 
-import ru.melowetty.tinkofftranslateservice.model.Language
 import java.time.LocalDateTime
 
 data class TranslateRecord(

@@ -3,7 +3,7 @@ package ru.melowetty.tinkofftranslateservice.service.impl
 import kotlinx.coroutines.*
 import org.springframework.stereotype.Service
 import ru.melowetty.tinkofftranslateservice.entity.TranslateRecord
-import ru.melowetty.tinkofftranslateservice.model.Language
+import ru.melowetty.tinkofftranslateservice.entity.Language
 import ru.melowetty.tinkofftranslateservice.repository.TranslateRecordRepository
 import ru.melowetty.tinkofftranslateservice.service.TranslateService
 import ru.melowetty.tinkofftranslateservice.service.TranslatorService

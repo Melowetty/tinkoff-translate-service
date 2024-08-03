@@ -3,6 +3,7 @@ package ru.melowetty.tinkofftranslateservice.model
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
+import ru.melowetty.tinkofftranslateservice.entity.Language
 
 class LanguageTest {
     @Test
