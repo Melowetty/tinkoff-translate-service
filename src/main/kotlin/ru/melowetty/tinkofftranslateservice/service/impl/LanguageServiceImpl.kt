@@ -21,7 +21,7 @@ class LanguageServiceImpl(
         return languageRepository.deleteLanguageByCode(code)
     }
 
-    override fun createLanguage(code: String, name: String): Language {
+    override fun createLanguage(code: String, name: String?): Language {
         return languageRepository.createLanguage(code, name)
     }
 }

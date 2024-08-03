@@ -6,5 +6,5 @@ interface LanguageService {
     fun getLanguages(): List<Language>
     fun getLanguageByCode(code: String): Language?
     fun deleteLanguageByCode(code: String)
-    fun createLanguage(code: String, name: String): Language
+    fun createLanguage(code: String, name: String?): Language
 }

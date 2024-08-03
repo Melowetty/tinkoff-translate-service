@@ -12,7 +12,7 @@ import java.sql.Statement
 class LanguageRepositoryImpl(
     private val jdbcTemplate: JdbcTemplate
 ): LanguageRepository {
-    override fun createLanguage(code: String, name: String): Language {
+    override fun createLanguage(code: String, name: String?): Language {
         val sql = "INSERT INTO language(code, name) VALUES(?, ?)"
         val keyHolder = GeneratedKeyHolder()
         jdbcTemplate.update({

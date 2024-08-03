@@ -74,6 +74,6 @@ class YandexTranslatorService(
 
     data class YandexApiSupportedLanguage(
         val code: String,
-        val name: String,
+        val name: String?,
     )
 }

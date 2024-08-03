@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS language(
     id SERIAL PRIMARY KEY,
     code VARCHAR(3) UNIQUE NOT NULL,
-    name VARCHAR(64) NOT NULL
+    name VARCHAR(64)
 );
 
 CREATE TABLE IF NOT EXISTS translate_record(
