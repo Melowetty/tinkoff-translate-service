@@ -1,5 +1,6 @@
 package ru.melowetty.tinkofftranslateservice.repository.impl
 
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
@@ -32,8 +33,13 @@ class LanguageRepositoryImpl(
     }
 
     override fun getLanguageByCode(code: String): Language? {
-        val sql = "SELECT * FROM language WHERE code = ?"
-        return jdbcTemplate.queryForObject(sql, Language::class.java, code.lowercase())
+        try {
+            val sql = "SELECT * FROM language WHERE code = ?"
+            return jdbcTemplate.queryForObject(sql, Language::class.java, code.lowercase())
+        }
+        catch (e: EmptyResultDataAccessException) {
+            return null
+        }
     }
 
     override fun deleteLanguageByCode(code: String) {
