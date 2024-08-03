@@ -12,6 +12,7 @@ import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
 import ru.melowetty.tinkofftranslateservice.entity.Language
+import ru.melowetty.tinkofftranslateservice.model.SupportedLanguage
 import ru.melowetty.tinkofftranslateservice.service.TranslatorService
 
 @Service
@@ -38,6 +39,23 @@ class YandexTranslatorService(
             res.translations.first().text
         }
     }
+
+    override suspend fun getSupportedLanguages(): List<SupportedLanguage> {
+        return withContext(Dispatchers.IO) {
+            val headers = HttpHeaders()
+            headers.contentType = MediaType.APPLICATION_JSON
+            headers.set("Authorization", "Api-Key $yandexTranslateApiKey")
+            val httpEntity = HttpEntity<Void>(headers)
+            val res = restTemplate.exchange("$API_URL/languages", HttpMethod.POST, httpEntity, YandexApiLanguagesResponse::class.java).body!!
+            res.languages.map {
+                SupportedLanguage(
+                    code = it.code,
+                    name = it.name
+                )
+            }
+        }
+    }
+
     companion object {
         private const val API_URL = "https://translate.api.cloud.yandex.net/translate/v2"
     }
@@ -48,5 +66,14 @@ class YandexTranslatorService(
 
     data class YandexApiTranslateResponse(
         val text: String,
+    )
+
+    data class YandexApiLanguagesResponse(
+        val languages: List<YandexApiSupportedLanguage>,
+    )
+
+    data class YandexApiSupportedLanguage(
+        val code: String,
+        val name: String,
     )
 }
