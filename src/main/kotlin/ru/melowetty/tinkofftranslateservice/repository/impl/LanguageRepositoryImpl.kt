@@ -33,7 +33,7 @@ class LanguageRepositoryImpl(
 
     override fun getLanguageByCode(code: String): Language? {
         val sql = "SELECT * FROM language WHERE code = ?"
-        return jdbcTemplate.queryForObject(sql, Language::class.java, code)
+        return jdbcTemplate.queryForObject(sql, Language::class.java, code.lowercase())
     }
 
     override fun deleteLanguageByCode(code: String) {
