@@ -5,8 +5,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import ru.melowetty.tinkofftranslateservice.controller.request.TranslateRequest
-import ru.melowetty.tinkofftranslateservice.controller.response.TranslateResponse
 import ru.melowetty.tinkofftranslateservice.model.Language
 import ru.melowetty.tinkofftranslateservice.service.TranslateService
 
@@ -35,4 +33,14 @@ class TranslateController(
             translated = translation,
         )
     }
+
+    data class TranslateResponse(
+        val translated: String,
+    )
+
+    data class TranslateRequest(
+        val sourceLanguage: String,
+        val targetLanguage: String,
+        val text: String,
+    )
 }
