@@ -11,4 +11,9 @@ class ExceptionController {
     fun handleIllegalArgumentException(e: IllegalArgumentException): ErrorResponse {
         return ErrorResponse.create(e, HttpStatus.BAD_REQUEST, e.message!!)
     }
+
+    @ExceptionHandler(RuntimeException::class)
+    fun handleRuntimeException(e: RuntimeException): ErrorResponse {
+        return ErrorResponse.create(e, HttpStatus.INTERNAL_SERVER_ERROR, e.message ?: "")
+    }
 }

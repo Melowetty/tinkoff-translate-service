@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
+import org.springframework.web.client.ResourceAccessException
 import org.springframework.web.client.RestTemplate
 import ru.melowetty.tinkofftranslateservice.entity.Language
 import ru.melowetty.tinkofftranslateservice.model.SupportedLanguage
@@ -26,17 +27,21 @@ class YandexTranslatorService(
 
     override suspend fun translateWord(word: String, sourceLanguage: Language, targetLanguage: Language): String {
         return withContext(Dispatchers.IO) {
-            val body: Map<String, Any> =
-                mapOf("targetLanguageCode" to targetLanguage.code,
-                    "sourceLanguageCode" to sourceLanguage.code,
-                    "texts" to arrayOf(word))
-            val headers = HttpHeaders()
-            headers.contentType = MediaType.APPLICATION_JSON
-            headers.set("Authorization", "Api-Key $yandexTranslateApiKey")
-            val httpEntity = HttpEntity(body, headers)
+            try {
+                val body: Map<String, Any> =
+                    mapOf("targetLanguageCode" to targetLanguage.code,
+                        "sourceLanguageCode" to sourceLanguage.code,
+                        "texts" to arrayOf(word))
+                val headers = HttpHeaders()
+                headers.contentType = MediaType.APPLICATION_JSON
+                headers.set("Authorization", "Api-Key $yandexTranslateApiKey")
+                val httpEntity = HttpEntity(body, headers)
 
-            val res = restTemplate.exchange("$API_URL/translate", HttpMethod.POST, httpEntity, YandexApiTranslationsResponse::class.java).body!!
-            res.translations.first().text
+                val res = restTemplate.exchange("$API_URL/translate", HttpMethod.POST, httpEntity, YandexApiTranslationsResponse::class.java).body!!
+                res.translations.first().text
+            } catch (e: ResourceAccessException) {
+                throw RuntimeException("Ошибка доступа к ресурсу для перевода")
+            }
         }
     }
 
