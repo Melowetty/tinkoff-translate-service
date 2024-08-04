@@ -3,7 +3,6 @@ package ru.melowetty.tinkofftranslateservice.repository.impl
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
-import org.springframework.jdbc.core.queryForList
 import org.springframework.jdbc.support.GeneratedKeyHolder
 import org.springframework.stereotype.Repository
 import ru.melowetty.tinkofftranslateservice.entity.Language

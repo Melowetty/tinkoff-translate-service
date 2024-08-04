@@ -15,8 +15,8 @@ class TranslateRecordRepositoryImpl(
                 "(ip_address, source_language, target_language, input, translated, created_on) " +
                 "VALUES (?, ?, ?, ?, ?, ?)",
             record.ipAddress,
-            record.sourceLanguage.code,
-            record.targetLanguage.code,
+            record.sourceLanguage.id,
+            record.targetLanguage.id,
             record.input,
             record.translated,
             Timestamp.valueOf(record.createdOn))
