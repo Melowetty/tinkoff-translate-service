@@ -7,10 +7,16 @@ gradle build
 ```
 ./gradlew build
 ```
-### Сборка docker-образа
+### Сборка и запуск через docker-compose (желательно)
+```
+docker-compose up -d --build
+```
+### Сборка и запуск через docker
 ```docker
 docker build -t translate-service .
+docker run -p 8080:8080 -t translate-service
 ```
+Примечание: в данном случае нужно, чтобы был доступ к базе данных PostgreSQL по порту 5432, с пользователем root и паролем root. Название базы данных: tinkoff-translate-service
 # Доступные эндпоинты
 ## Получение всех доступных языков
 
