@@ -10,6 +10,7 @@ import ru.melowetty.tinkofftranslateservice.service.TranslateService
 import ru.melowetty.tinkofftranslateservice.service.TranslatorService
 import java.time.LocalDateTime
 import java.util.concurrent.Executors
+import java.util.regex.Pattern
 
 @Service
 class TranslateServiceImpl(
@@ -53,15 +54,25 @@ class TranslateServiceImpl(
             val dispatcher = executor.asCoroutineDispatcher()
             val scope = CoroutineScope(dispatcher)
 
-            val words = text.split(" ").map {
-                scope.async {
-                    translatorService.translateWord(it, sourceLanguage, targetLanguage)
+            val parts = REGEX_FOR_PARTS.findAll(text).map { it.value }.toList()
+
+            val processedParts = parts.map {
+                return@map scope.async {
+                    if(!REGEX_SYMBOLS.matches(it)) {
+                        translatorService.translateWord(it, sourceLanguage, targetLanguage)
+                    }
+                    else " $it"
                 }
             }.awaitAll()
             executor.shutdown()
 
-            words
+            processedParts
 
-        }.joinToString(" ")
+        }.joinToString(" ").replace("  ", "").trim()
+    }
+
+    companion object {
+        val REGEX_FOR_PARTS = Pattern.compile("\\w+|[^\\w\\s]+", Pattern.UNICODE_CHARACTER_CLASS).toRegex()
+        val REGEX_SYMBOLS = Pattern.compile("[^\\w\\s]+", Pattern.UNICODE_CHARACTER_CLASS).toRegex()
     }
 }

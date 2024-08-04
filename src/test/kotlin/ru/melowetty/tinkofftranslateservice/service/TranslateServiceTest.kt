@@ -1,7 +1,7 @@
 package ru.melowetty.tinkofftranslateservice.service
 
 import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
@@ -13,6 +13,7 @@ import org.mockito.kotlin.any
 import ru.melowetty.tinkofftranslateservice.entity.Language
 import ru.melowetty.tinkofftranslateservice.repository.TranslateRecordRepository
 import ru.melowetty.tinkofftranslateservice.service.impl.TranslateServiceImpl
+import java.util.regex.Pattern
 
 @ExtendWith(MockitoExtension::class)
 class TranslateServiceTest {
@@ -43,8 +44,8 @@ class TranslateServiceTest {
 
             Mockito.`when`(languageService.getLanguageByCode("ru")).thenReturn(sourceLang)
             Mockito.`when`(languageService.getLanguageByCode("en")).thenReturn(targetLang)
-            val expected = "hi world"
-            val text = "привет мир"
+            val expected = "hi. world!"
+            val text = "привет. мир!"
             val actual = translateService.translate(text, "ru", "en", "123")
 
             assertEquals(expected, actual)
@@ -75,5 +76,21 @@ class TranslateServiceTest {
         assertThrows<IllegalArgumentException> {
             translateService.translate("", "ru", "en", "123")
         }
+    }
+
+    @Test
+    fun `regex test for finding symbols`() {
+        val regex = Pattern.compile("[^\\w\\s]+", Pattern.UNICODE_CHARACTER_CLASS).toRegex()
+        assertTrue(regex.matches("."))
+        assertFalse(regex.matches("привет"))
+    }
+
+    @Test
+    fun `regex test for finding parts`() {
+        val regex = Pattern.compile("\\w+|[^\\w\\s]+", Pattern.UNICODE_CHARACTER_CLASS).toRegex()
+        val matches = regex.findAll("привет мир.").toList()
+        assertEquals(matches[0].value,"привет")
+        assertEquals(matches[1].value,"мир")
+        assertEquals(matches[2].value,".")
     }
 }
